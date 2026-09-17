@@ -18,13 +18,15 @@ import { AnimatedTooltip, type TooltipItem } from "@/components/ui/animated-tool
 import { CourseCard, type CourseCardData } from "@/components/course/course-card";
 import { HeroHeadline } from "@/components/home/hero-headline";
 import { getPublishedCourses } from "@/lib/courses";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import {
   MOCK_COURSES,
   MOCK_CATEGORIES,
 } from "@/lib/constants";
 
-export const dynamic = "force-dynamic";
+// Cache and revalidate homepage every 5 minutes (ISR)
+// This guarantees instant static CDN delivery without stream disconnection errors on Netlify
+export const revalidate = 300;
 
 export default async function HomePage() {
   // 1. Fetch real published courses from Supabase (with graceful fallback)
@@ -42,8 +44,8 @@ export default async function HomePage() {
   }
 
   try {
-    // 2. Fetch real verified instructors from Supabase
-    const supabase = await createClient();
+    // 2. Fetch real verified instructors from Supabase using public client
+    const supabase = createPublicClient();
     const { data: instructorsData, error: instError } = await supabase
       .from("profiles")
       .select("id, full_name, avatar_url, headline, specialization")

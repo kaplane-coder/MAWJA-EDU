@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createPublicClient } from "@/lib/supabase/server";
 import { MOCK_COURSES } from "@/lib/constants";
 import type { CourseLevel, CourseStatus, LessonContentType } from "@/types/database.types";
 
@@ -130,7 +130,7 @@ export async function getPublishedCourses(params: CatalogQueryParams = {}) {
     limit = 9,
   } = params;
 
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   let query = supabase
     .from("courses")
@@ -258,7 +258,7 @@ export async function getPublishedCourses(params: CatalogQueryParams = {}) {
 export async function getPublishedCourseBySlug(
   slug: string
 ): Promise<CourseDetailModel | null> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   const { data, error } = await supabase
     .from("courses")

@@ -3,18 +3,40 @@ import { createServerClient } from "@supabase/ssr";
 import type { Database } from "@/types/database.types";
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  const isProtectedPath =
+    pathname.startsWith("/student") ||
+    pathname.startsWith("/formateur") ||
+    pathname.startsWith("/admin");
+
+  const isAuthPath =
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/register/formateur" ||
+    pathname === "/forgot-password";
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseAnonKey) {
+  // Early return for public routes (e.g., /, /courses, /api/health)
+  // Avoids unnecessary external network round-trips on Edge/Serverless functions
+  if (!isProtectedPath && !isAuthPath) {
     return response;
   }
+
+  const rawUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    "https://pmgppudtgvxtfauwzvuw.supabase.co";
+  const rawAnonKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZ3BwdWR0Z3Z4dGZhdXd6dnV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5ODk5NjMsImV4cCI6MjEwMjU2NTk2M30.KzI0UAuXJ9WkadYA4xE2iRFEdLHYUAzFqnY9dJDEPHQ";
+
+  const supabaseUrl = rawUrl.replace(/^["']|["']$/g, "").trim();
+  const supabaseAnonKey = rawAnonKey.replace(/^["']|["']$/g, "").trim();
 
   const supabase = createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
     cookies: {
@@ -35,23 +57,10 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  // Refresh auth session
+  // Check auth session for protected or auth pages
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
-
-  const isProtectedPath =
-    pathname.startsWith("/student") ||
-    pathname.startsWith("/formateur") ||
-    pathname.startsWith("/admin");
-
-  const isAuthPath =
-    pathname === "/login" ||
-    pathname === "/register" ||
-    pathname === "/register/formateur" ||
-    pathname === "/forgot-password";
 
   // 1. Unauthenticated users attempting to access protected dashboards
   if (!user && isProtectedPath) {
