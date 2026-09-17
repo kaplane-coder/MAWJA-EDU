@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ===================================================
+       MAWJA Color Tokens (Light + Electric Purple System)
+       70-80% White/Light + 20-30% Purple/Violet
+       =================================================== */
+    --background: 0 0% 98.5%;            /* #FAFAFA Clean soft white canvas */
+    --foreground: 240 10% 10%;           /* #09090B Deep near-black typography */
+
+    --surface: 0 0% 100%;                /* #FFFFFF Pure white container */
+    --surface-elevated: 0 0% 100%;       /* Elevated surface */
+    --surface-secondary: 255 100% 98%;   /* #F5F3FF Light purple surface */
+
+    --primary: 263.4 70% 50.4%;          /* #7C3AED Electric Purple */
+    --primary-foreground: 0 0% 100%;     /* #FFFFFF Pure crisp white */
+    --primary-hover: 262.1 83.3% 45%;    /* #6D28D9 Deep Purple */
+    --primary-subtle: 255 100% 97%;      /* #F5F3FF Soft violet background tint */
+
+    --secondary: 255 60% 96%;            /* #F5F3FF Soft violet neutral */
+    --secondary-foreground: 261 72% 23%; /* #2E1065 Dark Purple */
+    --secondary-hover: 255 50% 92%;
+
+    --muted: 250 30% 96%;                /* Inactive elements */
+    --muted-foreground: 250 12% 45%;     /* Secondary text */
+
+    --border: 250 25% 91%;               /* #EDE9FE Crisp subtle violet-tinted border */
+    --input: 250 25% 91%;                /* Input stroke */
+    --ring: 263.4 70% 50.4%;             /* Electric Purple focus ring */
+
+    /* Semantic Status Tokens */
+    --success: 152 76% 36%;              /* #16a34a Balanced Emerald */
+    --success-foreground: 0 0% 100%;
+    --success-subtle: 149 80% 95%;
+
+    --warning: 38 92% 50%;               /* #f59e0b Warm Amber */
+    --warning-foreground: 24 95% 15%;
+    --warning-subtle: 48 96% 95%;
+
+    --error: 0 84% 60%;                  /* #ef4444 Crisp Crimson */
+    --error-foreground: 0 0% 100%;
+    --error-subtle: 0 93% 96%;
+
+    --info: 217 91% 55%;                 /* Vibrant Sky Blue */
+    --info-foreground: 0 0% 100%;
+    --info-subtle: 214 95% 96%;
+
+    /* Radius System */
+    --radius-sm: 0.5rem;                 /* 8px  - Badges, small inputs */
+    --radius-md: 0.75rem;                /* 12px - Buttons, inputs */
+    --radius-lg: 1rem;                   /* 16px - Cards, dialogs */
+    --radius-xl: 1.25rem;                /* 20px - Large containers */
+    --radius-2xl: 1.75rem;               /* 28px - Hero cards & banners */
+
+    /* Elevation Shadow System with Purple Glow Accents */
+    --shadow-xs: 0 1px 2px 0 rgba(109, 40, 217, 0.03);
+    --shadow-sm: 0 1px 3px 0 rgba(109, 40, 217, 0.05), 0 1px 2px -1px rgba(109, 40, 217, 0.03);
+    --shadow-md: 0 4px 6px -1px rgba(109, 40, 217, 0.06), 0 2px 4px -2px rgba(109, 40, 217, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(109, 40, 217, 0.08), 0 4px 6px -4px rgba(109, 40, 217, 0.04);
+    --shadow-xl: 0 20px 25px -5px rgba(109, 40, 217, 0.10), 0 8px 10px -6px rgba(109, 40, 217, 0.05);
+    --shadow-glow: 0 0 30px -5px rgba(124, 58, 237, 0.25);
+  }
+
+  .dark {
+    --background: 240 10% 5%;
+    --foreground: 0 0% 98%;
+
+    --surface: 240 10% 8%;
+    --surface-elevated: 240 10% 11%;
+    --surface-secondary: 261 72% 15%;
+
+    --primary: 263.4 70% 58%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 263.4 70% 65%;
+    --primary-subtle: 261 72% 18%;
+
+    --secondary: 240 8% 14%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-hover: 240 8% 18%;
+
+    --muted: 240 8% 14%;
+    --muted-foreground: 240 5% 65%;
+
+    --border: 240 8% 16%;
+    --input: 240 8% 16%;
+    --ring: 263.4 70% 58%;
+
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans min-h-screen antialiased selection:bg-primary/15 selection:text-primary;
+    overflow-x: hidden;
+  }
+}
+
+/* ===================================================
+   Typography Scale System (Arabic & Universal)
+   =================================================== */
+@layer utilities {
+  .text-display {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.2];
+  }
+  .text-hero {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.25];
+  }
+  .text-h1 {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-[1.3];
+  }
+  .text-h2 {
+    @apply text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight leading-[1.35];
+  }
+  .text-h3 {
+    @apply text-lg sm:text-xl lg:text-2xl font-semibold leading-[1.4];
+  }
+  .text-h4 {
+    @apply text-base sm:text-lg font-semibold leading-[1.45];
+  }
+  .text-body-lg {
+    @apply text-base sm:text-lg font-normal leading-relaxed text-foreground/85;
+  }
+  .text-body {
+    @apply text-sm sm:text-base font-normal leading-relaxed text-foreground/80;
+  }
+  .text-small {
+    @apply text-xs sm:text-sm font-normal leading-normal text-muted-foreground;
+  }
+  .text-caption {
+    @apply text-xs font-medium tracking-wide text-muted-foreground;
+  }
+  .text-button {
+    @apply text-sm font-bold tracking-normal;
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
