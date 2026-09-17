@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Warning, ArrowCounterClockwise } from "@phosphor-icons/react/dist/ssr";
+import { Warning, ArrowCounterClockwise } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 
 export default function Error({
@@ -14,7 +14,15 @@ export default function Error({
 }) {
   React.useEffect(() => {
     console.error("MAWJA App Error:", error);
-  }, [error]);
+
+    // Auto-recover from transient CDN streaming disconnects
+    if (error?.message?.includes("Connection closed") || error?.message?.includes("closed network connection")) {
+      const timer = setTimeout(() => {
+        reset();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [error, reset]);
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center p-6 text-center">
